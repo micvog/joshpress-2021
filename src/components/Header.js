@@ -40,9 +40,9 @@ export default function Header() {
     <header className="flex justify-between items-center py-10">
       <div>
         <Link href="/">
-          <a aria-label="Tailwind CSS Blog">
+          <a aria-label="Josh Pollock">
             <TailwindMark className="h-6 sm:hidden" />
-            <TailwindLogo className="hidden sm:block h-6" />
+            <div>Josh Pollock</div>
           </a>
         </Link>
       </div>

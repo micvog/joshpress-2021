@@ -47,12 +47,9 @@ export default function Header() {
         </Link>
       </div>
       <div className="text-base leading-5">
-        <a
-          href="https://tailwindcss.com/docs"
-          className="font-medium text-gray-500 hover:text-gray-700"
-        >
-          Documentation &rarr;
-        </a>
+        <Link href="/blog">
+          <a className="font-medium text-gray-500 hover:text-gray-700">Blog &rarr;</a>
+        </Link>
       </div>
     </header>
   )

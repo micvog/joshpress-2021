@@ -4,8 +4,24 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 const withSyntaxHighlighting = require('./remark/withSyntaxHighlighting')
 const withProse = require('./remark/withProse')
-
+const legacyPosts = require('./src/legacyPosts')
 module.exports = withBundleAnalyzer({
+  async redirects() {
+    let redirects = []
+    legacyPosts.forEach((source) => {
+      redirects.push({
+        source,
+        destination: `https://legacy.joshpress.net${source}`, // Matched parameters can be used in the destination
+        permanent: true,
+      })
+      redirects.push({
+        source: source.replace(/\/$/, ''),
+        destination: `https://legacy.joshpress.net${source}`, // Matched parameters can be used in the destination
+        permanent: true,
+      })
+    })
+    return redirects
+  },
   pageExtensions: ['js', 'jsx', 'mdx'],
   experimental: {
     modern: true,

@@ -23,9 +23,7 @@ export default function Blog() {
               <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl md:text-[4rem] md:leading-[3.5rem]">
                 Latest Posts
               </h1>
-              <p className="text-lg text-gray-500">
-                All the latest Tailwind CSS news, straight from the team.
-              </p>
+              <p className="text-lg text-gray-500">Subitle</p>
             </div>
             <ul className="divide-y divide-gray-200">
               {posts.map(({ link, module: { default: Component, meta } }) => {

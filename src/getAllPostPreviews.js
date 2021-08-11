@@ -1,7 +1,7 @@
 import devToPosts from '../data/dev-to.json'
 function importAll(r) {
   return r.keys().map((fileName) => ({
-    link: `/posts${fileName.substr(1).replace(/\/index\.mdx$/, '')}`,
+    link: `/blog${fileName.substr(1).replace(/\/index\.mdx$/, '')}`,
     module: r(fileName),
   }))
 }
@@ -13,14 +13,14 @@ function dateSortDesc(a, b) {
 }
 
 export default function getAllPostPreviews() {
-  return importAll(require.context('./pages/posts/?preview', true, /\.mdx$/))
+  return importAll(require.context('./pages/blog/?preview', true, /\.mdx$/))
     .filter((p) => !p.link.includes('/snippets/'))
     .filter((p) => p.module.meta.private !== true)
     .sort((a, b) => dateSortDesc(a.module.meta.date, b.module.meta.date))
 }
 
 export function getAllPosts() {
-  return importAll(require.context('./pages/posts/?rss', true, /\.mdx$/))
+  return importAll(require.context('./pages/blog/?rss', true, /\.mdx$/))
     .filter((p) => !p.link.includes('/snippets/'))
     .filter((p) => p.module.meta.private !== true)
     .concat(

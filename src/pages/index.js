@@ -26,8 +26,22 @@ export default function Home() {
               <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl md:text-[4rem] md:leading-[3.5rem]">
                 Josh Pollock
               </h1>
-              <p className="text-lg text-gray-500">
+              <h2 className="text-lg text-gray-500">
                 JavaScript & PHP Engineer, Dog Enthusiast, Super Nerd.
+              </h2>
+            </div>
+            <div className="prose max-w-none text-gray900">
+              <p>
+                I make commerical open source products with Laravel, WordPress and React. Right, now
+                I am working on
+                <a href="https://pluginmachine.app" target="_blank" rel="noopener noreferrer">
+                  Plugin Machine
+                </a>{' '}
+                and work as a lead web engineer at{' '}
+                <a href="https:/10up.com" target="_blank" rel="noopener noreferrer">
+                  10up
+                </a>
+                .
               </p>
             </div>
           </div>

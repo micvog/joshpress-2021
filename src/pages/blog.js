@@ -10,7 +10,6 @@ const posts = getAllPosts()
 const postDateTemplate = tinytime('{MMMM} {DD}, {YYYY}')
 
 export default function Blog() {
-  console.log({ posts })
   return (
     <>
       <SectionContainer>

@@ -10,6 +10,7 @@ const posts = getAllPosts()
 const postDateTemplate = tinytime('{MMMM} {DD}, {YYYY}')
 
 export default function Blog() {
+  console.log({ posts })
   return (
     <>
       <SectionContainer>
@@ -26,7 +27,7 @@ export default function Blog() {
               <p className="text-lg text-gray-500">Subitle</p>
             </div>
             <ul className="divide-y divide-gray-200">
-              {posts.map(({ link, module: { default: Component, meta } }) => {
+              {posts.map(({ link, isExternal, module: { default: Component, meta } }) => {
                 return (
                   <li key={link} className="py-12">
                     <article className="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
@@ -37,27 +38,60 @@ export default function Blog() {
                             {postDateTemplate.render(new Date(meta.date))}
                           </time>
                         </dd>
+                        {isExternal && (
+                          <>
+                            <dt className="sr-only">Published at</dt>
+                            <dd className="text-base font-medium text-gray-500">
+                              <a href={'https://dev.to/shelob9'} target="_blank">
+                                Dev.to
+                              </a>
+                            </dd>
+                          </>
+                        )}
                       </dl>
-                      <div className="space-y-5 xl:col-span-3">
-                        <div className="space-y-6">
-                          <h2 className="text-2xl font-bold tracking-tight">
-                            <Link href={link}>
-                              <a className="text-gray-900">{meta.title}</a>
-                            </Link>
-                          </h2>
-                          <div className="prose max-w-none text-gray-500">{meta.description}</div>
-                        </div>
-                        <div className="text-base font-medium">
-                          <Link href={link}>
+                      {isExternal ? (
+                        <div className="space-y-5 xl:col-span-3">
+                          <div className="space-y-6">
+                            <h2 className="text-2xl font-bold tracking-tight">
+                              <a className="text-gray-900" href={link} target="_blank">
+                                {meta.title}
+                              </a>
+                            </h2>
+                            <div className="prose max-w-none text-gray-500">{meta.description}</div>
+                          </div>
+                          <div className="text-base font-medium">
                             <a
+                              href={link}
+                              target="_blank"
                               className="text-teal-600 hover:text-teal-700"
                               aria-label={`Read "${meta.title}"`}
                             >
                               Read more &rarr;
                             </a>
-                          </Link>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="space-y-5 xl:col-span-3">
+                          <div className="space-y-6">
+                            <h2 className="text-2xl font-bold tracking-tight">
+                              <Link href={link}>
+                                <a className="text-gray-900">{meta.title}</a>
+                              </Link>
+                            </h2>
+                            <div className="prose max-w-none text-gray-500">{meta.description}</div>
+                          </div>
+                          <div className="text-base font-medium">
+                            <Link href={link}>
+                              <a
+                                className="text-teal-600 hover:text-teal-700"
+                                aria-label={`Read "${meta.title}"`}
+                              >
+                                Read more &rarr;
+                              </a>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
                     </article>
                   </li>
                 )

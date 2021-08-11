@@ -12,10 +12,12 @@ function dateSortDesc(a, b) {
 }
 
 export default function getAllPostPreviews() {
-  return importAll(require.context('./pages/posts/?preview', true, /\.mdx$/))
-    .filter((p) => !p.link.includes('/snippets/'))
-    .filter((p) => p.module.meta.private !== true)
-    .sort((a, b) => dateSortDesc(a.module.meta.date, b.module.meta.date))
+  return (
+    importAll(require.context('./pages/posts/?preview', true, /\.mdx$/))
+      //.filter((p) => !p.link.includes('/snippets/'))
+      .filter((p) => p.module.meta.private !== true)
+      .sort((a, b) => dateSortDesc(a.module.meta.date, b.module.meta.date))
+  )
 }
 
 export function getAllPosts() {

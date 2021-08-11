@@ -1,11 +1,11 @@
 import tinytime from 'tinytime'
 import Link from 'next/link'
-import getAllPostPreviews from '@/getAllPostPreviews'
+import { getAllPosts } from '@/getAllPostPreviews'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
 import HtmlHead from '@/components/HtmlHead'
 
-const posts = getAllPostPreviews()
+const posts = getAllPosts()
 
 const postDateTemplate = tinytime('{MMMM} {DD}, {YYYY}')
 
@@ -45,9 +45,7 @@ export default function Blog() {
                               <a className="text-gray-900">{meta.title}</a>
                             </Link>
                           </h2>
-                          <div className="prose max-w-none text-gray-500">
-                            <Component />
-                          </div>
+                          <div className="prose max-w-none text-gray-500">{meta.description}</div>
                         </div>
                         <div className="text-base font-medium">
                           <Link href={link}>

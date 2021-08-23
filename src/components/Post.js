@@ -12,7 +12,7 @@ const postDateTemplate = tinytime('{dddd}, {MMMM} {DD}, {YYYY}')
 
 export default function Post({ meta, children, posts }) {
   const router = useRouter()
-
+  console.log({ meta, children, posts })
   if (meta.private) {
     return (
       <>
@@ -136,16 +136,19 @@ export default function Post({ meta, children, posts }) {
             </Head>
             <header className="pt-6 xl:pb-10">
               <div className="space-y-1 text-center">
-                <dl className="space-y-10">
-                  <div>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base leading-6 font-medium text-gray-500">
-                      <time dateTime={meta.date}>
-                        {postDateTemplate.render(new Date(meta.date))}
-                      </time>
-                    </dd>
-                  </div>
-                </dl>
+                {!meta.asPage && (
+                  <dl className="space-y-10">
+                    <div>
+                      <dt className="sr-only">Published on</dt>
+                      <dd className="text-base leading-6 font-medium text-gray-500">
+                        <time dateTime={meta.date}>
+                          {postDateTemplate.render(new Date(meta.date))}
+                        </time>
+                      </dd>
+                    </div>
+                  </dl>
+                )}
+
                 <div>
                   <PageTitle>{meta.title}</PageTitle>
                 </div>
@@ -155,32 +158,40 @@ export default function Post({ meta, children, posts }) {
               className="divide-y xl:divide-y-0 divide-gray-200 xl:grid xl:grid-cols-4 xl:gap-x-6 pb-16 xl:pb-20"
               style={{ gridTemplateRows: 'auto 1fr' }}
             >
-              <dl className="pt-6 pb-10 xl:pt-11 xl:border-b xl:border-gray-200">
-                <dt className="sr-only">Authors</dt>
-                <dd>
-                  <ul className="flex justify-center xl:block space-x-8 sm:space-x-12 xl:space-x-0 xl:space-y-8">
-                    {meta.authors.map((author) => (
-                      <li key={author.twitter} className="flex items-center space-x-2">
-                        <img src={author.avatar} alt="" className="w-10 h-10 rounded-full" />
-                        <dl className="text-sm font-medium whitespace-no-wrap">
-                          <dt className="sr-only">Name</dt>
-                          <dd className="text-gray-900">{author.name}</dd>
-                          <dt className="sr-only">Twitter</dt>
-                          <dd>
-                            <a
-                              href={`https://twitter.com/${author.twitter}`}
-                              className="text-teal-600 hover:text-teal-700"
-                            >
-                              @{author.twitter}
-                            </a>
-                          </dd>
-                        </dl>
-                      </li>
-                    ))}
-                  </ul>
-                </dd>
-              </dl>
-              <div className="divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2">
+              {!meta.asPage && (
+                <dl className="pt-6 pb-10 xl:pt-11 xl:border-b xl:border-gray-200">
+                  <dt className="sr-only">Authors</dt>
+                  <dd>
+                    <ul className="flex justify-center xl:block space-x-8 sm:space-x-12 xl:space-x-0 xl:space-y-8">
+                      {meta.authors.map((author) => (
+                        <li key={author.twitter} className="flex items-center space-x-2">
+                          <img src={author.avatar} alt="" className="w-10 h-10 rounded-full" />
+                          <dl className="text-sm font-medium whitespace-no-wrap">
+                            <dt className="sr-only">Name</dt>
+                            <dd className="text-gray-900">{author.name}</dd>
+                            <dt className="sr-only">Twitter</dt>
+                            <dd>
+                              <a
+                                href={`https://twitter.com/${author.twitter}`}
+                                className="text-teal-600 hover:text-teal-700"
+                              >
+                                @{author.twitter}
+                              </a>
+                            </dd>
+                          </dl>
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </dl>
+              )}
+              <div
+                className={
+                  meta.asPage
+                    ? 'divide-y divide-gray-200 xl:pb-0 xl:col-span-4 xl:row-span-4'
+                    : 'divide-y divide-gray-200 xl:pb-0 xl:col-span-3 xl:row-span-2'
+                }
+              >
                 <div className="max-w-none pt-10 pb-8">
                   <MDXProvider>{children}</MDXProvider>
                 </div>
@@ -201,41 +212,43 @@ export default function Post({ meta, children, posts }) {
                   </div>
                 )}
               </div>
-              <footer className="text-sm font-medium divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
-                {(next || previous) && (
-                  <div className="space-y-8 py-8">
-                    {next && (
-                      <div>
-                        <h2 className="text-xs leading-5 tracking-wide uppercase text-gray-500">
-                          Next Article
-                        </h2>
-                        <div className="text-teal-600 hover:text-teal-700">
-                          <Link href={next.link}>
-                            <a>{next.title}</a>
-                          </Link>
+              {!meta.asPage && (
+                <footer className="text-sm font-medium divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
+                  {(next || previous) && (
+                    <div className="space-y-8 py-8">
+                      {next && (
+                        <div>
+                          <h2 className="text-xs leading-5 tracking-wide uppercase text-gray-500">
+                            Next Article
+                          </h2>
+                          <div className="text-teal-600 hover:text-teal-700">
+                            <Link href={next.link}>
+                              <a>{next.title}</a>
+                            </Link>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    {previous && (
-                      <div>
-                        <h2 className="text-xs leading-5 tracking-wide uppercase text-gray-500">
-                          Previous Article
-                        </h2>
-                        <div className="text-teal-600 hover:text-teal-700">
-                          <Link href={previous.link}>
-                            <a>{previous.title}</a>
-                          </Link>
+                      )}
+                      {previous && (
+                        <div>
+                          <h2 className="text-xs leading-5 tracking-wide uppercase text-gray-500">
+                            Previous Article
+                          </h2>
+                          <div className="text-teal-600 hover:text-teal-700">
+                            <Link href={previous.link}>
+                              <a>{previous.title}</a>
+                            </Link>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
+                  )}
+                  <div className="pt-8">
+                    <Link href="/">
+                      <a className="text-teal-600 hover:text-teal-700">&larr; Back to the blog</a>
+                    </Link>
                   </div>
-                )}
-                <div className="pt-8">
-                  <Link href="/">
-                    <a className="text-teal-600 hover:text-teal-700">&larr; Back to the blog</a>
-                  </Link>
-                </div>
-              </footer>
+                </footer>
+              )}
             </div>
           </article>
         </main>

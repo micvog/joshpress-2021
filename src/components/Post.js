@@ -12,7 +12,6 @@ const postDateTemplate = tinytime('{dddd}, {MMMM} {DD}, {YYYY}')
 
 export default function Post({ meta, children, posts }) {
   const router = useRouter()
-  console.log({ meta, children, posts })
   if (meta.private) {
     return (
       <>

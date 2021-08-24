@@ -26,11 +26,36 @@ export default function Home() {
               <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl md:text-[4rem] md:leading-[3.5rem]">
                 Hi I'm Josh 👋
               </h1>
-              <h2 className="text-2xl text-gray-500">
-                I make commerical open source products with Laravel, WordPress and React.
-              </h2>
+              <h2 className="text-2xl text-gray-500">PHP & JavaScript Developer/ Dog Enthusiast</h2>
             </div>
             <div className="py-6">
+              <h3 className="text-2xl text-gray-500">About Me</h3>
+
+              <div className="prose w-full">
+                <p>
+                  I make commerical open source products and teach people how. Friendly nerd for
+                  PHP, Javascript, ecology, crypto, caffeine, music, Laravel, React, Docker,
+                  WordPress & sci-fi.
+                </p>
+
+                <p>
+                  When I was a student of environmental studies, I loved to learn about plants and
+                  complex and emergent systems. Also, I loved to plant trees and measure things, but
+                  I always returned to my fascination with computers and the internet. Over time, I
+                  became interested in how online communities, especially open source software
+                  movements could provide a model for a more sustainable economy.
+                </p>
+                <p>
+                  So, I started blogging with WordPress, developing WordPress themes and plugins,
+                  contributing to WordPress core, speaking at WordCamps, co-founding and selling a
+                  WordPress plugin company, etc.
+                </p>
+                <p>
+                  Now, I'm focusing on understanding more about how people use, benefit from and
+                  exploit the open web. I'm researching web3, and experimenting with multiplayer
+                  writing tools.
+                </p>
+              </div>
               <div className="mx-auto py-6">
                 <ul className="navigation" className="flex text-center pl-10">
                   <li className="pr-10   flex-col ">
@@ -62,6 +87,11 @@ export default function Home() {
               <div className="mx-auto py-6">
                 <h3 className="text-2xl text-gray-500">Some Things I've Helped Build</h3>
                 <ul className="navigation" className="flex text-center pl-10">
+                  <li className="pr-10 flex-col">
+                    <a href="https://shelob9.github.io/testing-javascript-in-and-around-wordpress/">
+                      WordPress Testing JavaScript in and Around WordPress
+                    </a>
+                  </li>
                   <li className="pr-10   flex-col ">
                     <a href="https://calderaforms.com" target="_blank" rel="noopener norefer">
                       Caldera Forms

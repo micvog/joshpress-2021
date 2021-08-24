@@ -35,7 +35,7 @@ export function TailwindLogo({ className }) {
   )
 }
 
-export default function Header() {
+export default function Header({ withBlogLink }) {
   return (
     <header className="flex justify-between items-center py-10">
       <div>
@@ -46,11 +46,19 @@ export default function Header() {
           </a>
         </Link>
       </div>
-      <div className="text-base leading-5">
-        <Link href="/blog">
-          <a className="font-medium text-gray-500 hover:text-gray-700">Blog &rarr;</a>
-        </Link>
-      </div>
+      {false !== withBlogLink ? (
+        <div className="text-base leading-5">
+          <Link href="/blog">
+            <a className="font-medium text-gray-500 hover:text-gray-700">Blog &rarr;</a>
+          </Link>
+        </div>
+      ) : (
+        <div className="text-base leading-5">
+          <Link href="/">
+            <a className="font-medium text-gray-500 hover:text-gray-700">Back &rarr;</a>
+          </Link>
+        </div>
+      )}
     </header>
   )
 }

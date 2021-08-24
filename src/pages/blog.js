@@ -14,7 +14,7 @@ export default function Blog() {
     <>
       <HtmlHead title="Blog" />
       <SectionContainer>
-        <Header />
+        <Header withBlogLink={false} />
       </SectionContainer>
       <SectionContainer>
         <main>
@@ -23,7 +23,7 @@ export default function Blog() {
               <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl md:text-[4rem] md:leading-[3.5rem]">
                 Latest Posts
               </h1>
-              <p className="text-lg text-gray-500">Subitle</p>
+              <p className="text-lg text-gray-500"></p>
             </div>
             <ul className="divide-y divide-gray-200">
               {posts.map(({ link, isExternal, module: { default: Component, meta } }) => {

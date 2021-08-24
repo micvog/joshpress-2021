@@ -12,13 +12,13 @@ const postDateTemplate = tinytime('{MMMM} {DD}, {YYYY}')
 export default function Blog() {
   return (
     <>
+      <HtmlHead title="Blog" />
       <SectionContainer>
         <Header />
       </SectionContainer>
       <SectionContainer>
         <main>
           <div className="divide-y divide-gray-200">
-            <HtmlHead />
             <div className="pt-6 pb-8 space-y-2 md:space-y-5">
               <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl md:text-[4rem] md:leading-[3.5rem]">
                 Latest Posts

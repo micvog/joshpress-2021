@@ -7,7 +7,7 @@ import { MDXProvider } from '@mdx-js/react'
 import Header, { TailwindMark } from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
 import smallCard from '@/img/twitter-card-small.jpg'
-
+import HtmlHead from './HtmlHead'
 const postDateTemplate = tinytime('{dddd}, {MMMM} {DD}, {YYYY}')
 
 export default function Post({ meta, children, posts }) {
@@ -18,39 +18,23 @@ export default function Post({ meta, children, posts }) {
         <SectionContainer>
           <main>
             <article className="py-16">
-              <Head>
-                <title>{meta.title} – Tailwind CSS</title>
-                <meta name="twitter:site" content="@tailwindcss" />
-                <meta name="twitter:creator" content="@tailwindcss" />
+              <HtmlHead {...meta}>
                 <meta name="twitter:title" content={`${meta.title} – Tailwind CSS`} />
                 <meta name="twitter:description" content={meta.description} />
                 {meta.image ? (
                   <>
                     <meta name="twitter:card" content="summary_large_image" />
-                    <meta
-                      name="twitter:image"
-                      content={`https://blog.tailwindcss.com${meta.image}`}
-                    />
+                    <meta name="twitter:image" content={`https://joshpress.net${meta.image}`} />
                   </>
                 ) : (
                   <>
                     <meta name="twitter:card" content="summary" />
-                    <meta
-                      name="twitter:image"
-                      content={`https://blog.tailwindcss.com${smallCard}`}
-                    />
+                    <meta name="twitter:image" content={`https://joshpress.net${smallCard}`} />
                   </>
                 )}
-                <meta
-                  property="og:url"
-                  content={`https://blog.tailwindcss.com${router.pathname}`}
-                />
+                <meta property="og:url" content={`https://joshpress.net${router.pathname}`} />
                 <meta property="og:type" content="article" />
-                <meta property="og:title" content={`${meta.title} – Tailwind CSS`} />
-                <meta property="og:description" content={meta.description} />
-                <meta property="og:image" content={`https://blog.tailwindcss.com${meta.image}`} />
-                <meta name="description" content={meta.description}></meta>
-              </Head>
+              </HtmlHead>
               <header className="">
                 <div className="text-center">
                   <div className="flex justify-center">
@@ -118,21 +102,7 @@ export default function Post({ meta, children, posts }) {
       <SectionContainer>
         <main>
           <article className="xl:divide-y xl:divide-gray-200">
-            <Head>
-              <title>{meta.title} – Tailwind CSS</title>
-              <meta name="twitter:card" content="summary_large_image" />
-              <meta name="twitter:site" content="@tailwindcss" />
-              <meta name="twitter:creator" content="@tailwindcss" />
-              <meta name="twitter:title" content={`${meta.title} – Tailwind CSS`} />
-              <meta name="twitter:description" content={meta.description} />
-              <meta name="twitter:image" content={`https://blog.tailwindcss.com${meta.image}`} />
-              <meta property="og:url" content={`https://blog.tailwindcss.com${router.pathname}`} />
-              <meta property="og:type" content="article" />
-              <meta property="og:title" content={`${meta.title} – Tailwind CSS`} />
-              <meta property="og:description" content={meta.description} />
-              <meta property="og:image" content={`https://blog.tailwindcss.com${meta.image}`} />
-              <meta name="description" content={meta.description}></meta>
-            </Head>
+            <HtmlHead {...meta} />
             <header className="pt-6 xl:pb-10">
               <div className="space-y-1 text-center">
                 {!meta.asPage && (

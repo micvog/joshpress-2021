@@ -30,19 +30,10 @@ export default function Home() {
                 JavaScript & PHP Engineer, Dog Enthusiast, Super Nerd.
               </h2>
             </div>
-            <div className="prose max-w-none text-gray900">
-              <p>
-                I make commerical open source products with Laravel, WordPress and React. Right, now
-                I am working on
-                <a href="https://pluginmachine.app" target="_blank" rel="noopener noreferrer">
-                  Plugin Machine
-                </a>{' '}
-                and work as a lead web engineer at{' '}
-                <a href="https:/10up.com" target="_blank" rel="noopener noreferrer">
-                  10up
-                </a>
-                .
-              </p>
+            <div className="pt-6">
+              <div className="prose">
+                <p>I make commerical open source products with Laravel, WordPress and React.</p>
+              </div>
             </div>
           </div>
         </main>

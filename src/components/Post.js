@@ -4,7 +4,7 @@ import tinytime from 'tinytime'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { MDXProvider } from '@mdx-js/react'
-import Header, { TailwindMark } from '@/components/Header'
+import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
 import smallCard from '@/img/twitter-card-small.jpg'
 import HtmlHead from './HtmlHead'
@@ -41,7 +41,6 @@ export default function Post({ meta, children, posts }) {
                     <Link href="/">
                       <a className="inline-flex">
                         <span className="sr-only">All posts</span>
-                        <TailwindMark className="h-12 w-12" />
                       </a>
                     </Link>
                   </div>

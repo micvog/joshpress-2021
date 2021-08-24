@@ -46,14 +46,21 @@ export default function Header({ withBlogLink }) {
           </a>
         </Link>
       </div>
+
       {false !== withBlogLink ? (
         <div className="text-base leading-5">
+          <Link href="/about">
+            <a className="font-medium text-gray-500 hover:text-gray-700 pr-4">About</a>
+          </Link>
           <Link href="/blog">
             <a className="font-medium text-gray-500 hover:text-gray-700">Blog &rarr;</a>
           </Link>
         </div>
       ) : (
         <div className="text-base leading-5">
+          <Link href="/about">
+            <a className="font-medium text-gray-500 hover:text-gray-700 pr-4">About</a>
+          </Link>
           <Link href="/">
             <a className="font-medium text-gray-500 hover:text-gray-700">Back &rarr;</a>
           </Link>

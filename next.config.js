@@ -7,7 +7,19 @@ const withProse = require('./remark/withProse')
 const legacyPosts = require('./src/legacyPosts')
 module.exports = withBundleAnalyzer({
   async redirects() {
-    let redirects = []
+    let redirects = [
+      {
+        source: '/cv',
+        destination:
+          'https://docs.google.com/document/d/11aWg3N7ySk6D-luegGdLT6QIFUC7GoiabUsQW6a_wcA/export?format=pdf',
+        permanent: false,
+      },
+      {
+        source: '/js-testing',
+        destination: 'https://shelob9.github.io/testing-javascript-in-and-around-wordpress',
+        permanent: false,
+      },
+    ]
     legacyPosts.forEach((source) => {
       redirects.push({
         source,

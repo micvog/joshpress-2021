@@ -52,8 +52,8 @@ export default function Home() {
                 </p>
                 <p>
                   Now, I'm focusing on understanding more about how people use, benefit from and
-                  exploit the open web. I'm researching web3, and experimenting with multiplayer
-                  writing tools.
+                  exploit the open web. I'm researching web3, building tools for WordPress
+                  developers and experimenting with multiplayer writing tools.
                 </p>
               </div>
               <div className="mx-auto py-6">
@@ -89,7 +89,7 @@ export default function Home() {
                 <ul className="navigation" className="flex text-center pl-10">
                   <li className="pr-10 flex-col">
                     <a href="https://shelob9.github.io/testing-javascript-in-and-around-wordpress/">
-                      WordPress Testing JavaScript in and Around WordPress
+                      WordPress Testing JavaScript In and Around WordPress
                     </a>
                   </li>
                   <li className="pr-10   flex-col ">

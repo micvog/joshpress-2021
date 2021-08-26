@@ -4,20 +4,15 @@ export const meta = {
   private: false,
   title: 'Windows PHP8 Development Setup With WSL2',
   description: `How to setup Debian for PHP8 and JavaScript web development in Windows with WSL2.`,
-  date: '2021-08-25T19:45:00.0Z',
+  date: '2021-08-24T19:45:00.0Z',
   authors: [josh],
 }
 
 I have been using Windows for PHP and JavaScript development for a few years now. I usually have two Linuxes on my computer. One with PHP 7 and PHP 8. I like that when I totally mess up a Linux, I can delete it and rebuild it.
 
-This post is about setup for PHP 8 web development for Windows. I have a [similar post](https://joshpress.net/blog/wsl-ubuntu-php7) about setting up the PHP 7 linux. In this post I will show what I do __after__ setting up WSL2 for PHP and JavaScript development.
+This post is about setup for PHP 8 web development for Windows. This Linux is mainly for [Laravel](https://laravel.com) development. I have a [similar post](https://joshpress.net/blog/wsl-ubuntu-php7) about setting up the PHP 7 linux. In this post I will show what I do __after__ setting up WSL2 for PHP and JavaScript development.
 
-If you do not have WSL2 installed, please take a look at these links first:
-
-- [Install WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-  - `wsl` command works for me in gitbash, but not powershell. I don't know why.
-- [Docker With WSL2](https://docs.docker.com/docker-for-windows/wsl/)
-- [Set default distro](https://winaero.com/set-default-wsl-linux-distro-windows-10/)
+If you do not have WSL2 installed, please checkout my post about [installing Windows Linux Subsystem](/install-wsl).
 
 ## Install Ubuntu
 
@@ -33,8 +28,10 @@ sudo apt install curl
 sudo apt install wget
 sudo apt-get install git
 
-
 ```
+
+Now that git is installed, you should setup SSH and git credential managment. I [explained how to do that at the end of this post](/install-wsl).
+
 
 ## Install Node
 
@@ -99,35 +96,6 @@ Test it with:
 ```bash
 composer -v
 ```
-
-## Setup Git and SSH
-
-Before this setup can be complete, you need to be able to use SSH. Otherwise, you can't do git push to Github.
-
-You could create a new key for this Linux. I prefer to copy keys from the host machine.
-
-First setup your git profile, with something like:
-
-```sh
-git config --global user.name "Roy Sivan"
-git config --global user.email "hi@hiroy.club"
-git config --global core.autocrlf false
-git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe"
-```
-
-That line tells git to use Windows' credential manger. Then you can copy the keys from Windows to Ubuntu. Make sure to change "roy" to your Windows username:
-
-```sh
-mkdir ~/.ssh
-chmod 600 ~/.ssh/id_rsa
-cd ~/.ssh
-cp /mnt/c/Users/roy/.ssh/id_rsa* .
-```
-
-I figured this out by reading these links:
-
-- https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-git
-- https://peteoshea.co.uk/setup-git-in-wsl/
 
 ## Now Code
 

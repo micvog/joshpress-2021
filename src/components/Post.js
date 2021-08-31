@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import PageTitle from '@/components/PageTitle'
 import tinytime from 'tinytime'
 import Link from 'next/link'
@@ -10,8 +9,14 @@ import smallCard from '@/img/twitter-card-small.jpg'
 import HtmlHead from './HtmlHead'
 const postDateTemplate = tinytime('{dddd}, {MMMM} {DD}, {YYYY}')
 
+const twitterShareLink = ({ pathname, title }) => {
+  let url = `https://joshpress.net${pathname}`
+  let text = `${title} by @josh412`
+  return `http://twitter.com/share?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`
+}
 export default function Post({ meta, children, posts }) {
   const router = useRouter()
+
   if (meta.private) {
     return (
       <>
@@ -164,17 +169,20 @@ export default function Post({ meta, children, posts }) {
                   <MDXProvider>{children}</MDXProvider>
                 </div>
                 {meta.footer && (
-                  <div className="pt-6 pb-16" dangerouslySetInnerHTML={{ __html: meta.footer }} />
+                  <div
+                    className="pt-6 pb-16 meta-footer"
+                    dangerouslySetInnerHTML={{ __html: meta.footer }}
+                  />
                 )}
-                {!meta.footer && meta.discussion && (
+                {!meta.asPage && (
                   <div className="pt-6 pb-16">
                     <p>
                       Want to talk about this post?{' '}
                       <a
-                        href={meta.discussion}
+                        href={twitterShareLink({ pathname: router.pathname, title: meta.title })}
                         className="font-medium text-teal-600 hover:text-teal-700"
                       >
-                        Discuss this on GitHub &rarr;
+                        Discuss this on Twitter &rarr;
                       </a>
                     </p>
                   </div>
@@ -210,6 +218,14 @@ export default function Post({ meta, children, posts }) {
                       )}
                     </div>
                   )}
+                  <div className="py-8">
+                    <a
+                      className="text-teal-600 hover:text-teal-700"
+                      href={twitterShareLink({ pathname: router.pathname, title: meta.title })}
+                    >
+                      Share on Twitter
+                    </a>
+                  </div>
                   <div className="pt-8">
                     <Link href="/">
                       <a className="text-teal-600 hover:text-teal-700">&larr; Back to the blog</a>

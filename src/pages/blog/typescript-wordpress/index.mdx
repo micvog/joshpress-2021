@@ -1,0 +1,177 @@
+import { josh } from '@/authors'
+
+export const meta = {
+  private: false,
+  title: 'TypeScript For WordPress Developers',
+  description: `Why TypeScript is important for WordPress developers.`,
+  date: '2021-08-31T19:45:00.0Z',
+  authors: [josh],
+}
+
+
+Typescript makes it harder to write JavaScript incorrectly, by adding type annotations and static analysis.
+
+Working with TypeScript is similar to writing CSS in SCSS files. All CSS is valid SCSS, but we get special syntax that is eaiser to write and then compiled away to CSS. Typescript is a superset of JavaScript, that is compiled back to JavaScript at build-time.
+Typescript is a dialect of JavaScript. It's a superset, the same way SCSS is a superset of CSS.
+that adds new syntax to define types and interfaces for variables, function arguments, function return types and objects. The typescript compiler to
+
+I wrote [a longer introduction for Pantheon](https://pantheon.io/blog/typescript-wordpress-basicsj) awhile ago, that you may also want to check out.
+### Quick Start
+
+To get started with Typescript without worrying about setup, you can create a new project using [tsdx](https://github.com/jaredpalmer/tsdx):
+
+```bash
+npx tsdx create learn-typescript
+```
+
+Also, [adding typescript to create-react-app](https://create-react-app.dev/docs/adding-typescript/) is documented and straight-forward. [@wordpress/scripts](https://www.npmjs.com/package/@wordpress/scripts) works with Typescript as well.
+
+
+## Benfit For React Code
+
+Imagine this component to show a WordPress post:
+
+```jsx
+const Post = ({ title, content, author }) => (
+	<div>
+		<PostTitle title={title} />
+		<PostContent content={content} />
+		<PostAuthor author={author} />
+	</div>
+);
+```
+
+This component **assumes** that its props match the expected props of the child components. We can test that's the case with tests that have the correct props:
+
+```jsx
+describe("Post", () => {
+	it("Puts the title in the right place", () => {
+        //Shallow is enzyme's shallow renderer
+        const post = {
+            title : {
+                rendered: 'Hello Saturn'
+            };
+            //...
+        };
+        //render with sample data
+		const wrapper = shallow(
+			<Post {...post} />
+		);
+        //Make sure prop is passed correctly
+		expect(wrapper.find(PostTitle).prop("title")).toBe(post.title.rendered);
+	});
+});
+```
+
+A good thing about this test is that if there are run time errros causesd by running this component, the tests will show you those erorrs. This test is an example of [what I condsider an anti-pattern](https://react-wordpress-testing.joshpress.net/testing-react-apps/3-unit-testing-react) -- testing React's functionality, not the actual code being created.
+
+This type of rigid testing makes refactoring safe, and gives us assurances our props are mapped correctly. But, it's also a a lot of boring test code. This kind of test likely will need to get rewritten as the componets are refactored, and that's a bad smell.
+
+The problem this kind of testing solves is thatwe could have **run-time** errors if the componets and sub-components being tested are not used according to what we assume there public APIs, errors will happen. We can assume that if we run the components in a production-like environment, and errors happen, that corrisponds to what an end user would describe as "broken" in a product environment.
+
+OK, fine, but two questions:
+
+1. Why are we assuming the public API of the components?
+2. Why do we have to wait until the program is run to see its errors?
+
+If we are implimenting the component to show the title of a WordPress post, it might look like this, assuming title is a string, not an object, as its returned from the WordPress REST API:
+
+```jsx
+const PostTitle = ({ title }) => <h1>{title}</h1>;
+```
+
+Just looking at this code, I can see it has a bug and will generate an error when it runs:
+
+```jsx
+const post = {
+    title : {
+        rendered: 'Hello Saturn'
+    };
+    //...
+};
+const PostTitle = ({ title }) => <h1>{title}</h1>;
+const Post = ({post})=> <div><PostTitle title={post.title} /></div>;
+```
+
+I can see this will generate an error, beacuse I can infer how the code is supposed to work by running it. Right now, to get my computer to show that error, I have to run the code, which seems silly, a computer should be able to know how it is supposed to be used.
+
+This is why we have static analysis. Before we compile our JSX to JavaScript or compile any JavaScript from the dialect we are writing in to one that runs in the browser, or our server, we can opt into analyzing the code for likely erros caused by passing the wrong types to functions -- for example the props passed to a React component.
+
+```tsx
+const post = {
+    title : {
+        rendered: 'Hello Saturn'
+    };
+    //...
+};
+const PostTitle = (props: { title: string }) => <h1>{title}</h1>;
+const Post = ( props: {title: {rendered: string}} )=> (
+    <div>
+        <PostTitle title={post.title} />
+    </div>
+);
+```
+
+Now, this is as obviously wrong to the Typescript compiler as it is to me and requires refactoring to:
+
+```tsx
+const PostTitle = (props: { title: string }) => <h1>{title}</h1>;
+const Post = (props: { title: { rendered: string } }) => (
+	<div>
+		<PostTitle title={post.title.rendered} />
+	</div>
+);
+```
+
+Now, that I'm not assuming the public API of my components, the compiler and my IDE can tell me in advance if I am using the components correctly or now.
+
+Or maybe this component will take the whole post object, not just the string, and handle getting to the right part of the title object:
+
+```jsx
+const PostTitle = ({ title }) => <h1>{title.rendered}</h1>;
+```
+
+Or maybe we want the whole post, so we can use it's ID and post type in the markup:
+
+```jsx
+const PostTitle = ({ post }) => (
+	<h1 className={post.type} id={post.id}>
+		{post.title.rendered}
+	</h1>
+);
+```
+
+Most likely I'm going to go through several implimentations before I find something that works. For each change, I need to know that my props are mapped correctly. Instead of rewriting my tests, or writing tests outside of my unique business logic, I'm going to assume that if my components are used correctly, that React will run them correctly. Instead of writing tests for all of those, TypeScript will raise errors when I compile or when I run the tests of my actual business logic involving my components.
+
+
+## Interfaces and Types
+
+In the components I showed above, I wrote the type annotations inline with the function declaration. That gets messy and does not allow reusing those annotations. Instead, we can define types of interfaces. Here is a type we can use for the post title prop:
+
+```tsx
+type WpPostTitle {
+  rendered: string;
+  raw?: string;
+}
+
+const PostTitle = (props: { title: WpPostTitle }) => <h1>{title.rendered}</h1>;
+
+```
+
+Types are like structs in other languages. They define properties an object must have or may have. Notice the "?" after the property raw. That makes it an optional property.
+
+
+In general, I prefer to use interfaces, beacuse they are extendable:
+
+```tsx
+interface Renderable {
+  rendered: string;
+  raw?: string;
+}
+interface WpPostTitle extends Renderable {}
+interface WpPostContent extends Renderable {}
+```
+
+## Types Are Good
+
+I hope this short intro to TypeScript for WordPress developers helped. If you want types for WordPress objects, I recommend taking a look at [the wp-types package](https://github.com/johnbillion/wp-json-schemas/tree/trunk/packages/wp-types).

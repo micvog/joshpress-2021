@@ -63,11 +63,11 @@ describe("Post", () => {
 });
 ```
 
-A good thing about this test is that if there are run time errros causesd by running this component, the tests will show you those erorrs. This test is an example of [what I condsider an anti-pattern](https://react-wordpress-testing.joshpress.net/testing-react-apps/3-unit-testing-react) -- testing React's functionality, not the actual code being created.
+A good thing about this test is that if there are run time erros causesd by running this component, the tests will show you those erorrs. This test is an example of [what I condsider an anti-pattern](https://react-wordpress-testing.joshpress.net/testing-react-apps/3-unit-testing-react) -- testing React's functionality, not the actual code being created.
 
 This type of rigid testing makes refactoring safe, and gives us assurances our props are mapped correctly. But, it's also a a lot of boring test code. This kind of test likely will need to get rewritten as the componets are refactored, and that's a bad smell.
 
-The problem this kind of testing solves is thatwe could have **run-time** errors if the componets and sub-components being tested are not used according to what we assume there public APIs, errors will happen. We can assume that if we run the components in a production-like environment, and errors happen, that corrisponds to what an end user would describe as "broken" in a product environment.
+The problem this kind of testing solves is that we could have **run-time** errors if the componets and sub-components being tested are not used according to what we assume there public APIs, errors will happen. We can assume that if we run the components in a production-like environment, and errors happen, that corrisponds to what an end user would describe as "broken" in a product environment.
 
 OK, fine, but two questions:
 

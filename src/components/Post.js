@@ -9,8 +9,8 @@ import smallCard from '@/img/twitter-card-small.jpg'
 import HtmlHead from './HtmlHead'
 const postDateTemplate = tinytime('{dddd}, {MMMM} {DD}, {YYYY}')
 
-const twitterShareLink = ({ pathname, title }) => {
-  let url = `https://joshpress.net${pathname}`
+const twitterShareLink = ({ slug, title }) => {
+  let url = `https://joshpress.net${slug}`
   let text = `${title} by @josh412`
   return `http://twitter.com/share?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`
 }
@@ -93,6 +93,7 @@ export default function Post({ meta, children, posts }) {
       </>
     )
   }
+  const slug = router.pathname;
 
   const postIndex = posts.findIndex((post) => post.link === router.pathname)
   const previous = posts[postIndex + 1]
@@ -174,19 +175,31 @@ export default function Post({ meta, children, posts }) {
                     dangerouslySetInnerHTML={{ __html: meta.footer }}
                   />
                 )}
-                {!meta.asPage && (
-                  <div className="pt-6 pb-16">
+                
+                 <div className="pt-6 pb-16">
+                 {!meta.asPage && (
+                      <p>
+                        Want to talk about this post?{' '}
+                        <a
+                          href={twitterShareLink({ slug, title: meta.title })}
+                          className="font-medium text-teal-600 hover:text-teal-700"
+                        >
+                          Discuss this on Twitter &rarr;
+                        </a>
+                      </p>
+                    
+                  )}
                     <p>
-                      Want to talk about this post?{' '}
+                      Found a typo or want to suggest an edit?{' '}
                       <a
-                        href={twitterShareLink({ pathname: router.pathname, title: meta.title })}
+                        href={`https://github.com/Shelob9/joshpress-2021/edit/master/src/pages${slug}/index.mdx`}
                         className="font-medium text-teal-600 hover:text-teal-700"
+                        target="_blank"
                       >
-                        Discuss this on Twitter &rarr;
+                        Open a pull request &rarr;
                       </a>
                     </p>
                   </div>
-                )}
               </div>
               {!meta.asPage && (
                 <footer className="text-sm font-medium divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">

@@ -1,0 +1,81 @@
+import { josh } from '@/authors'
+
+export const meta = {
+  private: false,
+  title: 'Adding Attributes To WordPress Block Types',
+  description: `How to add extra Gutenberg block attributes to some block types, all block types or one block type.`,
+  date: '2021-09-02T19:45:00.0Z',
+  authors: [josh],
+}
+
+In the WordPress block editor, the data associated with a block are represented as attributes. When you [register a block type](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/), you can choose to associate [attributes](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/) with the block type. These can store any data about the block you need.
+
+But, what if you want to add additional attributes to block types you did not create, for example core blocks? We can use a filter to add additional attributes to blocks! Here are some examples of how you can add additional attributes to some block types, all block types or one block type.
+
+All of these examples use the [blocks.registerBlockType](https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/#blocks-registerblocktype) filter.
+
+## Add Additional Block Attributes To All Block Types
+
+The first example is simplest, it adds an additional attributes to everything block type:
+
+```javascript
+wp.hooks.addFilter(
+    'blocks.registerBlockType',
+    'hi-roy/add-to-all',
+    ( settings, name ) => {
+       return  {...settings, attributes : {...settings.attributes, roy: { type: 'string' } } };
+    }
+);
+```
+
+WordPress' JavaScript hooks require 3 arguments. First, the name of the filter. The second is an identifier for your filter, which you can use to remove it later. The third is the callback function. In the callback function, this example uses [Object spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) to add an additional attribute to the attributes property of the settings object exposed by this hook.
+
+This will add one additional attribute, of the string type, to all blocks.
+
+## Add Additional Block Attributes To All Core Blocks
+
+This next example only applies to core blocks:
+
+```javascript
+wp.hooks.addFilter(
+    'blocks.registerBlockType',
+    'hi-roy/add-to-all',
+    ( settings, name ) => {
+        if( name.startsWith( 'core/')){
+            return  {...settings, attributes : {...settings.attributes, roy: { type: 'string' } } };
+        }
+        return settings;
+    }
+);
+```
+
+This example checks if the block type namespace is "core" and only adds the attributes if that is true.
+
+
+## Add Additional Block Attributes To One Block Type
+
+
+The third and final example only applies to paragraph blocks:
+
+```javascript
+wp.hooks.addFilter(
+    'blocks.registerBlockType',
+    'hi-roy/add-to-all',
+    ( settings, name ) => {
+        if( 'core/paragraph'){
+            return  {...settings, attributes : {...settings.attributes, roy: { type: 'string' } } };
+        }
+        return settings;
+    }
+);
+```
+
+You could adapt this example to work with any block type.
+
+## Why
+
+Those are some examples of how to change attributes, or really any settings of a WordPress block type.
+
+You may want to do this to add an additional setting to a core block. This is helpful when an existing block is almost perfect and can save a lot of time compared to creating a new block type.
+
+In Roy's Gutenberg Object plugin, he [uses this filter to add one additional attribute to all blocks](https://github.com/royboy789/gutenberg-object-plugin/blob/master/assets/js/block-register/index.js). That attribute tracks a unique identifier for every block added to a post. You can [see how that works here](https://github.com/royboy789/gutenberg-object-plugin/blob/master/assets/js/block-save/block-save.js). That

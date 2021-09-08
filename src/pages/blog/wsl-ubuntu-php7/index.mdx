@@ -28,11 +28,11 @@ I found that [installing Node with NVM](https://www.digitalocean.com/community/t
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 source ~/.bashrc
-nvm install lts/erbium
+nvm install 14
 npm install --global yarn
 ```
 
-This installs the LTS version of Node. That includes npm. It also using npm, to install Yarn.
+This installs Node 14. That includes npm. It also using npm, to install Yarn.
 
 Test it with:
 
@@ -49,12 +49,11 @@ As of when I wrote this, `sudo apt install php-cli` installs PHP7, not PHP8. Tha
 
 ```bash
 sudo apt install php-cli
-
+```
 Then you can install the PHP extensions with:
 
-```
+```bash
 sudo apt install php7.4-{mysql,cli,common,imap,ldap,xml,fpm,curl,mbstring,zip}
-
 ```
 
 You can add or remove extensions from that list, based on your needs.

@@ -1,0 +1,164 @@
+import { josh } from '@/authors'
+
+export const meta = {
+  private: true,
+  title: 'Using PHP Namespaces And Autoloaders In WordPress Plugins'
+  description: `Why and how I use a PSR-4 Autoloader in a WordPress plugin.`,
+  date: '2021-09-02T19:45:00.0Z',
+  authors: [josh],
+}
+
+
+
+## What An Autoloader Does
+
+Whenever PHP attempts to use a class that has not yet been loaded into memory, it will attempt to use all registered "autoloaders." If not an exception is thrown.
+
+Autoloaders act as a way to automatically load classes, as needed. We register them using the function [spl_autoload_register](https://www.php.net/manual/en/function.spl-autoload-register.php).
+
+We don't have to follow any standard, but it is a good idea to follow one, more on that in a bit. But here is the most basic autoloader:
+
+```php
+spl_autoload_register(function ($class) {
+    include __DIR__ .'classes/class-' . $class . '.php';
+});
+```
+
+If you had class "FoodItems" in the file "classes/class-FoodItems.php", this autoloader would support that.
+
+## What Are PHP Namespaces
+
+[PHP namespaces](https://www.php.net/manual/en/language.namespaces.php) help us organize our code and avoid class name conflicts. Two classes with the same name will cause an error. If I create a plugin with the namespace "JoshTools", I can have a class called "Menu", __in that namespace__ and it will not matter if your plugin is running on the same site and has a class called "Menu", as long as it is in __your namespace__.
+
+Namespaces help code fromn different plugins or libraries play nice together, which is great. They have been supported since PHP 5.3, so totally safe to use in WordPress. Here is another article that is all about [namespaces](https://www.thoughtfulcode.com/a-complete-guide-to-php-namespaces/)
+
+Here is a class with a namespace:
+
+```php
+<?php
+namespace JoshTools;
+
+class Plugin  {
+
+  public static function getSettings(){
+    //...
+  }
+}
+```
+
+Here is a class in another namespace, that uses this class:
+
+```php
+<?php
+namespace JoshTools\Menus;
+use JoshTools\Plugin;
+
+class Main  {
+
+  function render(){
+     $settings = Plugin::getSettings();
+  }
+}
+```
+
+Check out two things in that code please. First, the namespace has two parts. First is the same root namespace as before, then a slash and another namespace.  Second, is the use statement, beacuse the first class isn't in the same namespace as this class, we "import" it with this use statement.
+
+
+## PSR-4 Standard
+
+The two classes I showed above will work, if the classes are in the right files, according to the [PSR-4 standard](https://www.php-fig.org/psr/psr-4/). WordPress core does not use this standard, but [I recommend following it for your own plugins and themes](https://torquemag.io/2018/01/dont-follow-wordpress-coding-standards/). PSR-4 gives the names of the classes and the directories they are in meaning. It's less to think about and more information.
+
+When we register a PSR-4 autoloader, any directory can be for the root namespace, and then all other namespaces are relative to that. So, if the "JoshTools" namespace from before was in the directory "src", then the class "Plugin" would be in "src/Plugin.php". The second class would be stored at "src/Menus/Main.php", beacuse the class is called "Main" and it's in a subnamespace of the root "Menus".
+
+So two rules of file nameing, assuming root namespace of ApexPlugin and root directory of "php":
+
+- Class name is filename
+  - Class "ApexPlugin\SpaceTravel" is stored in "php/SpaceTravel.php"
+- Each namespace level is "equal".
+    - Class "ApexPlugin\SpaceTravel\Ships\Rocket" is stored in "php/SpaceTravel/Ships/Rocket.php"
+
+### Using PSR-4 With Composer
+
+When you use the PSR-4 autoloader standard, you can use Composer's PSR-4 autoloader, along with other dependencies. In your composer.json file:
+
+```json
+{
+	"autoload": {
+		"psr-4": {
+			"IiCouponControl\\": "./php"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"IiCouponControl\\Tests\\": "./tests"
+		}
+	}
+}
+```
+
+This plugin uses two different autoloaders, one for testing and one when tests are not installed. In composer.json file, we must use "\\" instead of a single backslash. Namespaces end with "\\" as well.
+"
+
+In the main file of my plugin, I include the autoloader:
+
+```php
+/**
+* Include the autoloader
+*/
+add_action('plugins_loaded', function () {
+    if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+        include __DIR__ . '/vendor/autoload.php';
+    }
+});
+```
+
+When using this option, it is require to run `composer install` before the plugin will work. Also, having composer installed. If you're using other dependencies, it probably make sense to use it to autoload your classes, beacuse you need the autoloader for your dependencies.
+
+### Using PSR-4 Without Composer
+
+If you are not using Composer for managing dependencies or anything else, it probably doesn't make sense to use Composer just for an autoloader. Why the extra complexity instead of cut and pasting the next snippet into your plugin and changing like one thing?
+
+
+```php
+/**
+ * Register autoloader for "Salad\Bar" namespace.
+ *
+ * See: https://www.php-fig.org/psr/psr-4/examples/
+ */
+add_action( 'init', function(){
+  spl_autoload_register(function ($class) {
+    // project-specific namespace prefix
+    $prefix = 'Salad\\Bar\\';
+
+    // base directory for the namespace prefix
+    $base_dir = __DIR__ . '/src/';
+
+    // does the class use the namespace prefix?
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        // no, move to the next registered autoloader
+        return;
+    }
+
+    // get the relative class name
+    $relative_class = substr($class, $len);
+
+    // replace the namespace prefix with the base directory, replace namespace
+    // separators with directory separators in the relative class name, append
+    // with .php
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
+    // if the file exists, require it
+    if (file_exists($file)) {
+        require $file;
+    }
+  });
+});
+
+```
+
+## Use Namespaces And An Autoloader
+
+That's a brief explanation of php namespaces and autoloaders. Not having to think about where to put a file or worrying about conflicting class names makes life less stressful. Following the PHP standard makes it easy for new developers to start working on a project. Having everything the same makes it easier to jump between lots of projects, something I do a lot.
+
+If you're reading this far and want to beta test something I'm working on that makes it easier and faster to use modern PHP and JavaScript in WordPress plugins, [request](https://pluginmachine.app/request) an invite here.

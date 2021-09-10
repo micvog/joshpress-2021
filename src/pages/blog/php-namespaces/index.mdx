@@ -7,7 +7,7 @@ export const meta = {
   authors: [josh],
 }
 
-
+I've been [talking about using Composer along with PHP namespaces and autoloaders](https://wordpress.tv/2015/04/14/josh-pollock-using-composer-to-increase-your-wordpress-development-powers/) for awhile now. I think they are worth a little extra setup and the time to learn a standard, given the benefits. In this blog post, I'll explain how they work and why I always use these language features.
 
 ## What An Autoloader Does
 
@@ -54,7 +54,7 @@ use JoshTools\Plugin;
 
 class Main  {
 
-  function render(){
+  public function render(){
      $settings = Plugin::getSettings();
   }
 }

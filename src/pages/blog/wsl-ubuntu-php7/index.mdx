@@ -12,7 +12,7 @@ I have been using Windows for PHP and JavaScript development for a few years now
 
 This post is about setup for PHP7 web development for Windows. This is Linux is mainly used for WordPress development. I have a [similar post](https://joshpress.net/blog/wsl-debian-php8) about setting up the PHP 8 linux. In this post I will show what I do __after__ setting up WSL2 for PHP and JavaScript development. In this post I will show what I do __after__ setting up WSL2 for PHP and JavaScript development.
 
-If you do not have WSL2 installed, please checkout my post about [installing Windows Linux Subsystem](/install-wsl).
+If you do not have WSL2 installed, please checkout my post about [installing Windows Linux Subsystem](/blog/install-wsl).
 
 
 ## Install Ubuntu
@@ -28,11 +28,11 @@ I found that [installing Node with NVM](https://www.digitalocean.com/community/t
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 source ~/.bashrc
-nvm install lts/erbium
+nvm install 14
 npm install --global yarn
 ```
 
-This installs the LTS version of Node. That includes npm. It also using npm, to install Yarn.
+This installs Node 14. That includes npm. It also using npm, to install Yarn.
 
 Test it with:
 
@@ -49,12 +49,11 @@ As of when I wrote this, `sudo apt install php-cli` installs PHP7, not PHP8. Tha
 
 ```bash
 sudo apt install php-cli
-
+```
 Then you can install the PHP extensions with:
 
-```
+```bash
 sudo apt install php7.4-{mysql,cli,common,imap,ldap,xml,fpm,curl,mbstring,zip}
-
 ```
 
 You can add or remove extensions from that list, based on your needs.

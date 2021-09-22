@@ -124,7 +124,7 @@ If you are not using Composer for managing dependencies or anything else, it pro
  *
  * See: https://www.php-fig.org/psr/psr-4/examples/
  */
-add_action( 'init', function(){
+add_action( 'plugins_loaded', function(){
   spl_autoload_register(function ($class) {
     // project-specific namespace prefix
     $prefix = 'Salad\\Bar\\';

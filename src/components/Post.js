@@ -93,7 +93,7 @@ export default function Post({ meta, children, posts }) {
       </>
     )
   }
-  const slug = router.pathname;
+  const slug = router.pathname
 
   const postIndex = posts.findIndex((post) => post.link === router.pathname)
   const previous = posts[postIndex + 1]
@@ -175,31 +175,30 @@ export default function Post({ meta, children, posts }) {
                     dangerouslySetInnerHTML={{ __html: meta.footer }}
                   />
                 )}
-                
-                 <div className="pt-6 pb-16">
-                 {!meta.asPage && (
-                      <p>
-                        Want to talk about this post?{' '}
-                        <a
-                          href={twitterShareLink({ slug, title: meta.title })}
-                          className="font-medium text-teal-600 hover:text-teal-700"
-                        >
-                          Discuss this on Twitter &rarr;
-                        </a>
-                      </p>
-                    
-                  )}
+
+                <div className="pt-6 pb-16">
+                  {!meta.asPage && (
                     <p>
-                      Found a typo or want to suggest an edit?{' '}
+                      Want to talk about this post?{' '}
                       <a
-                        href={`https://github.com/Shelob9/joshpress-2021/edit/master/src/pages${slug}/index.mdx`}
+                        href={twitterShareLink({ slug, title: meta.title })}
                         className="font-medium text-teal-600 hover:text-teal-700"
-                        target="_blank"
                       >
-                        Open a pull request &rarr;
+                        Discuss this on Twitter &rarr;
                       </a>
                     </p>
-                  </div>
+                  )}
+                  <p>
+                    Found a typo or want to suggest an edit?{' '}
+                    <a
+                      href={`https://github.com/Shelob9/joshpress-2021/edit/master/src/pages${slug}/index.mdx`}
+                      className="font-medium text-teal-600 hover:text-teal-700"
+                      target="_blank"
+                    >
+                      Open a pull request &rarr;
+                    </a>
+                  </p>
+                </div>
               </div>
               {!meta.asPage && (
                 <footer className="text-sm font-medium divide-y divide-gray-200 xl:col-start-1 xl:row-start-2">
@@ -234,7 +233,7 @@ export default function Post({ meta, children, posts }) {
                   <div className="py-8">
                     <a
                       className="text-teal-600 hover:text-teal-700"
-                      href={twitterShareLink({ pathname: router.pathname, title: meta.title })}
+                      href={twitterShareLink({ slug: router.pathname, title: meta.title })}
                     >
                       Share on Twitter
                     </a>
